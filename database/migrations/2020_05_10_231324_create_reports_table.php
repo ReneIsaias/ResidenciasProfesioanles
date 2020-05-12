@@ -19,6 +19,7 @@ class CreateReportsTable extends Migration
             $table->string('nameReport',100)->unique();
             $table->string('descriptionReport',200)->nullable();
             $table->boolean('statusReport');
+            $table->foreignId('id_typeFile')->references('id')->on('type_files')->onDelete('cascade');
             $table->timestamps();
         });
     }

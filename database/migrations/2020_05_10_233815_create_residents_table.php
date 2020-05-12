@@ -21,14 +21,15 @@ class CreateResidentsTable extends Migration
             $table->string('firtsLastnameResident',30);
             $table->string('secondLastnameResident',30)->nullable();
             $table->string('emailResident',50)->unique();
+            $table->string('passwordResident',50);
             $table->string('phoneResident',20);
-            $table->string('becaResident',50)->nullable();
             $table->string('periodResident',100)->nullable();
             $table->foreignId('id_careers')->references('id')->on('careers')->onDelete('cascade');
             $table->foreignId('id_typesafes')->references('id')->on('typesafes')->onDelete('cascade');
             $table->foreignId('id_semesters')->references('id')->on('semesters')->onDelete('cascade');
             $table->foreignId('id_studiesplans')->references('id')->on('studiesplans')->onDelete('cascade');
             $table->foreignId('id_relatives')->references('id')->on('relatives')->onDelete('cascade');
+            $table->foreignId('id_typeBeca')->references('id')->on('type_becas')->onDelete('cascade');
             $table->timestamps();
         });
     }

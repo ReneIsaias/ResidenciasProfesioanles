@@ -18,15 +18,17 @@ class CreateBusinessesTable extends Migration
             $table->id();
             $table->string('rfcBusiness',50)->unique();
             $table->string('nameBusiness',100);
-            $table->string('turnBusiness',100);
-            $table->string('sectorBusiness',100);
             $table->string('emailBusiness')->unique();
             $table->string('misionBusiness');
             $table->string('addresBusiness');
             $table->string('phoneBusiness',50);
             $table->string('cpBusiness',10);
+            $table->boolean('statusBusines');
             $table->foreignId('id_titulars')->references('id')->on('titulars')->onDelete('cascade');
             $table->foreignId('id_staffs')->references('id')->on('staffs')->onDelete('cascade');
+            $table->foreignId('id_covenant')->references('id')->on('covenants')->onDelete('cascade');
+            $table->foreignId('id_turns')->references('id')->on('turns')->onDelete('cascade');
+            $table->foreignId('id_sectors')->references('id')->on('sectors')->onDelete('cascade');
             $table->timestamps();
         });
     }
