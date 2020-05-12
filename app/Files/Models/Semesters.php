@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Semesters extends Model
 {
-    //
+    protected $fillable = [
+    	'nameSemester',
+    	'statusSemester',
+    ];
 }

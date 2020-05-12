@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Turns extends Model
 {
-    //
+    protected $fillable = [
+    	'descriptionTurn',
+    	'statusTurn',
+    ];
 }

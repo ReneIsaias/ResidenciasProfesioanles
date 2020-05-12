@@ -7,6 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Careers::class, function (Faker $faker) {
     return [
-        //
+    	'keyCareer' => $faker->unique()->name,
+    	'careerName' => $faker->unique()->name,
+    	'careerStatus' => 1,
     ];
 });
