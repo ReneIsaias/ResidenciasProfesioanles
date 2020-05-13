@@ -14,7 +14,8 @@ class RelativesController extends Controller
      */
     public function index()
     {
-        //
+         $relatives = Relatives::orderBy('id','Asc')->paginate(10);
+        return view('relatives.index',compact('relatives'));
     }
 
     /**
@@ -24,7 +25,8 @@ class RelativesController extends Controller
      */
     public function create()
     {
-        //
+        $relatives = Relatives::get();
+        return view('relatives.create',compact('relatives'));
     }
 
     /**
@@ -35,7 +37,19 @@ class RelativesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $create = Relatives::create([
+            'nameRelative' => request('nameRelative'),
+            'firstLastname' => request('firstLastname'),
+            'secondLastname' => request('secondLastname'),
+            'phoneRelative' => request('phoneRelative'),
+            'addresRelative' => request('addresRelative'),
+            'id_typefamily' => request('id_typefamily'),     
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('relatives.index')->with('status_success','Relatives saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
+
     }
 
     /**
@@ -46,7 +60,7 @@ class RelativesController extends Controller
      */
     public function show(Relatives $relatives)
     {
-        //
+        return view('relatives.show', compact('relatives'));
     }
 
     /**
@@ -57,7 +71,7 @@ class RelativesController extends Controller
      */
     public function edit(Relatives $relatives)
     {
-        //
+        return view('relatives.edit', compact('relatives'));
     }
 
     /**
@@ -69,7 +83,10 @@ class RelativesController extends Controller
      */
     public function update(Request $request, Relatives $relatives)
     {
-        //
+       $relatives -> update($request->all());
+
+        return redirect()->route('relatives.edit', $relatives->id)
+                ->with('info', 'Relatives updated successfully');
     }
 
     /**
@@ -80,6 +97,8 @@ class RelativesController extends Controller
      */
     public function destroy(Relatives $relatives)
     {
-        //
+        $relatives -> delete();
+
+        return back()->with('info','Relatives deleted successfully');
     }
 }

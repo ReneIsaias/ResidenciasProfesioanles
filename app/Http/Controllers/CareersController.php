@@ -14,7 +14,8 @@ class CareersController extends Controller
      */
     public function index()
     {
-        //
+        $careers = Careers::orderBy('id','Asc')->paginate(10);
+        return view('careers.index',compact('careers'));
     }
 
     /**
@@ -24,7 +25,8 @@ class CareersController extends Controller
      */
     public function create()
     {
-        //
+        $careers = Careers::get();
+        return view('careers.create',compact('careers'));
     }
 
     /**
@@ -35,7 +37,16 @@ class CareersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $create = Careers::create([
+            'keyCareer' => request('keyCareer'),
+            'careerName' => request('careerName'),
+            'careerStatus' => request('careerStatus'),     
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('careers.index')->with('status_success','Careers saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
+
     }
 
     /**
@@ -46,7 +57,7 @@ class CareersController extends Controller
      */
     public function show(Careers $careers)
     {
-        //
+        return view('careers.show', compact('careers'));
     }
 
     /**
@@ -57,7 +68,7 @@ class CareersController extends Controller
      */
     public function edit(Careers $careers)
     {
-        //
+        return view('careers.edit', compact('careers'));
     }
 
     /**
@@ -69,7 +80,10 @@ class CareersController extends Controller
      */
     public function update(Request $request, Careers $careers)
     {
-        //
+        $careers -> update($request->all());
+
+        return redirect()->route('careers.edit', $careers->id)
+                ->with('info', 'Careers updated successfully');
     }
 
     /**
@@ -80,6 +94,8 @@ class CareersController extends Controller
      */
     public function destroy(Careers $careers)
     {
-        //
+        $careers -> delete();
+
+        return back()->with('info','Careers deleted successfully');
     }
 }

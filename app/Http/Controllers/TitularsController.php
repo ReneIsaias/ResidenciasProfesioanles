@@ -14,7 +14,8 @@ class TitularsController extends Controller
      */
     public function index()
     {
-        //
+         $titulars = Titulars::orderBy('id','Asc')->paginate(10);
+        return view('titulars.index',compact('titulars'));
     }
 
     /**
@@ -24,7 +25,8 @@ class TitularsController extends Controller
      */
     public function create()
     {
-        //
+         $titulars = Titulars::get();
+        return view('titulars.create',compact('titulars'));
     }
 
     /**
@@ -35,7 +37,17 @@ class TitularsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $create = Titulars::create([
+            'nameTitular' => request('nameTitular'),
+            'firstLastname' => request('firstLastname'), 
+            'secondLastname' => request('secondLastname'),
+            'phoneTitular' => request('phoneTitular'), 
+            'id_post' => request('id_post'),
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('titulars.index')->with('status_success','Titulars saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +58,7 @@ class TitularsController extends Controller
      */
     public function show(Titulars $titulars)
     {
-        //
+         return view('titulars.show', compact('titulars'));
     }
 
     /**
@@ -57,7 +69,7 @@ class TitularsController extends Controller
      */
     public function edit(Titulars $titulars)
     {
-        //
+         return view('titulars.edit', compact('titulars'));
     }
 
     /**
@@ -69,7 +81,10 @@ class TitularsController extends Controller
      */
     public function update(Request $request, Titulars $titulars)
     {
-        //
+          $titulars -> update($request->all());
+
+        return redirect()->route('titulars.edit', $titulars->id)
+                ->with('info', 'Titulars updated successfully');
     }
 
     /**
@@ -80,6 +95,8 @@ class TitularsController extends Controller
      */
     public function destroy(Titulars $titulars)
     {
-        //
+          $titulars -> delete();
+
+        return back()->with('info','Titulars deleted successfully');
     }
 }

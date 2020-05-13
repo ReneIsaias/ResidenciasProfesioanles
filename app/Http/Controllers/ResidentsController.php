@@ -14,7 +14,8 @@ class ResidentsController extends Controller
      */
     public function index()
     {
-        //
+         $residents = Residents::orderBy('id','Asc')->paginate(10);
+        return view('residents.index',compact('residents'));
     }
 
     /**
@@ -24,7 +25,8 @@ class ResidentsController extends Controller
      */
     public function create()
     {
-        //
+        $residents = Residents::get();
+        return view('residents.create',compact('residents'));
     }
 
     /**
@@ -35,7 +37,26 @@ class ResidentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $create = Residents::create([
+            'residentRegistration' => request('residentRegistration'),
+            'nameResident' => request('nameResident'),
+            'firtsLastnameResident' => request('firtsLastnameResident'),
+            'secondLastnameResident' => request('secondLastnameResident'),
+            'emailResident' => request('emailResident'),
+            'passwordResident' => request('passwordResident'),
+            'phoneResident' => request('phoneResident'),
+            'periodResident' => request('periodResident'),
+            'id_careers' => request('id_careers'),
+            'id_typesafes' => request('id_typesafes'),
+            'id_semesters' => request('id_semesters'),
+            'id_studiesplans' => request('id_studiesplans'),
+            'id_relatives' => request('id_relatives'),            
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('residents.index')->with('status_success','Residents saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
+
     }
 
     /**
@@ -46,7 +67,7 @@ class ResidentsController extends Controller
      */
     public function show(Residents $residents)
     {
-        //
+        return view('residents.show', compact('residents'));
     }
 
     /**
@@ -57,7 +78,7 @@ class ResidentsController extends Controller
      */
     public function edit(Residents $residents)
     {
-        //
+        return view('residents.edit', compact('residents'));
     }
 
     /**
@@ -69,7 +90,10 @@ class ResidentsController extends Controller
      */
     public function update(Request $request, Residents $residents)
     {
-        //
+      $residents -> update($request->all());
+
+        return redirect()->route('residents.edit', $residents->id)
+                ->with('info', 'Residents updated successfully');
     }
 
     /**
@@ -80,6 +104,8 @@ class ResidentsController extends Controller
      */
     public function destroy(Residents $residents)
     {
-        //
+         $residents -> delete();
+
+        return back()->with('info','Residents deleted successfully');
     }
 }

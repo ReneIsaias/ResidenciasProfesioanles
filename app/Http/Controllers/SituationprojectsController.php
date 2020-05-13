@@ -14,7 +14,8 @@ class SituationprojectsController extends Controller
      */
     public function index()
     {
-        //
+          $situationprojects = Situationprojects::orderBy('id','Asc')->paginate(10);
+        return view('situationprojects.index',compact('situationprojects'));
     }
 
     /**
@@ -24,7 +25,8 @@ class SituationprojectsController extends Controller
      */
     public function create()
     {
-        //
+             $situationprojects = Situationprojects::get();
+        return view('situationprojects.create',compact('situationprojects'));
     }
 
     /**
@@ -35,7 +37,15 @@ class SituationprojectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $create = Situationprojects::create([
+            'projectSituation' => request('projectSituation'),
+            'descriptionSituation' => request('descriptionSituation'),
+            'statusSituation' => request('statusSituation'),     
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('situationprojects.index')->with('status_success','Situationprojects saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +56,7 @@ class SituationprojectsController extends Controller
      */
     public function show(Situationprojects $situationprojects)
     {
-        //
+        return view('situationprojects.show', compact('situationprojects'));
     }
 
     /**
@@ -57,7 +67,7 @@ class SituationprojectsController extends Controller
      */
     public function edit(Situationprojects $situationprojects)
     {
-        //
+      return view('situationprojects.edit', compact('situationprojects'));
     }
 
     /**
@@ -69,7 +79,10 @@ class SituationprojectsController extends Controller
      */
     public function update(Request $request, Situationprojects $situationprojects)
     {
-        //
+        $situationprojects -> update($request->all());
+
+        return redirect()->route('situationprojects.edit', $situationprojects->id)
+                ->with('info', 'Situationprojects updated successfully');
     }
 
     /**
@@ -80,6 +93,8 @@ class SituationprojectsController extends Controller
      */
     public function destroy(Situationprojects $situationprojects)
     {
-        //
+         $situationprojects -> delete();
+
+        return back()->with('info','Situationprojects deleted successfully');
     }
 }

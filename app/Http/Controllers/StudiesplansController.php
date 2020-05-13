@@ -14,7 +14,8 @@ class StudiesplansController extends Controller
      */
     public function index()
     {
-        //
+         $studiesplans = Studiesplans::orderBy('id','Asc')->paginate(10);
+        return view('studiesplans.index',compact('studiesplans'));
     }
 
     /**
@@ -24,7 +25,8 @@ class StudiesplansController extends Controller
      */
     public function create()
     {
-        //
+         $studiesplans = Studiesplans::get();
+        return view('studiesplans.create',compact('studiesplans'));
     }
 
     /**
@@ -35,7 +37,16 @@ class StudiesplansController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $create = Studiesplans::create([
+            'planStudies' => request('planStudies'),
+            'descriptionPlan' => request('descriptionPlan'), 
+            'planDate' => request('planDate'),
+            'planStatus' => request('planStatus'), 
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('studiesplans.index')->with('status_success','Studiesplans saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +57,7 @@ class StudiesplansController extends Controller
      */
     public function show(Studiesplans $studiesplans)
     {
-        //
+         return view('studiesplans.show', compact('studiesplans'));
     }
 
     /**
@@ -57,7 +68,7 @@ class StudiesplansController extends Controller
      */
     public function edit(Studiesplans $studiesplans)
     {
-        //
+         return view('studiesplans.edit', compact('studiesplans'));
     }
 
     /**
@@ -69,7 +80,10 @@ class StudiesplansController extends Controller
      */
     public function update(Request $request, Studiesplans $studiesplans)
     {
-        //
+          $studiesplans -> update($request->all());
+
+        return redirect()->route('studiesplans.edit', $studiesplans->id)
+                ->with('info', 'Studiesplans updated successfully');
     }
 
     /**
@@ -80,6 +94,8 @@ class StudiesplansController extends Controller
      */
     public function destroy(Studiesplans $studiesplans)
     {
-        //
+          $studiesplans -> delete();
+
+        return back()->with('info','Studiesplans deleted successfully');
     }
 }

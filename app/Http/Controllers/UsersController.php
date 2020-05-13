@@ -14,7 +14,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $users = Users::orderBy('id','Asc')->paginate(10);
+        return view('users.index',compact('users'));
     }
 
     /**
@@ -24,7 +25,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+         $users = Users::get();
+        return view('users.create',compact('users'));
     }
 
     /**
@@ -35,7 +37,14 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $create = Users::create([
+            'descriptionSector' => request('descriptionSector'),
+            'statusSector' => request('statusSector'), 
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('users.index')->with('status_success','Users saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +55,7 @@ class UsersController extends Controller
      */
     public function show(Users $users)
     {
-        //
+         return view('users.show', compact('users'));
     }
 
     /**
@@ -57,7 +66,7 @@ class UsersController extends Controller
      */
     public function edit(Users $users)
     {
-        //
+         return view('users.edit', compact('users'));
     }
 
     /**
@@ -69,7 +78,10 @@ class UsersController extends Controller
      */
     public function update(Request $request, Users $users)
     {
-        //
+          $users -> update($request->all());
+
+        return redirect()->route('users.edit', $users->id)
+                ->with('info', 'Users updated successfully');
     }
 
     /**
@@ -80,6 +92,8 @@ class UsersController extends Controller
      */
     public function destroy(Users $users)
     {
-        //
+          $users -> delete();
+
+        return back()->with('info','Users deleted successfully');
     }
 }

@@ -14,7 +14,8 @@ class PermissionsController extends Controller
      */
     public function index()
     {
-        //
+         $permissions = Permissions::orderBy('id','Asc')->paginate(10);
+        return view('permissions.index',compact('permissions'));
     }
 
     /**
@@ -24,7 +25,8 @@ class PermissionsController extends Controller
      */
     public function create()
     {
-        //
+        $permissions = Permissions::get();
+        return view('permissions.create',compact('permissions'));
     }
 
     /**
@@ -35,7 +37,16 @@ class PermissionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $create = Permissions::create([
+            'namePermission' => request('namePermission'),
+            'slugPermission' => request('slugPermission'),
+            'descriptionPermission' => request('descriptionPermission'),
+            'statusPermission' => request('statusPermission'),
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('permissions.index')->with('status_success','Permissions saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +57,7 @@ class PermissionsController extends Controller
      */
     public function show(Permissions $permissions)
     {
-        //
+       return view('permissions.show', compact('permissions'));
     }
 
     /**
@@ -57,7 +68,7 @@ class PermissionsController extends Controller
      */
     public function edit(Permissions $permissions)
     {
-        //
+        return view('permissions.edit', compact('permissions'));
     }
 
     /**
@@ -69,7 +80,10 @@ class PermissionsController extends Controller
      */
     public function update(Request $request, Permissions $permissions)
     {
-        //
+        $permissions -> update($request->all());
+
+        return redirect()->route('permissions.edit', $permissions->id)
+                ->with('info', 'Permissions updated successfully');
     }
 
     /**
@@ -80,6 +94,8 @@ class PermissionsController extends Controller
      */
     public function destroy(Permissions $permissions)
     {
-        //
+         $permissions -> delete();
+
+        return back()->with('info','Permissions deleted successfully');
     }
 }

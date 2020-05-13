@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Roles extends Model
 {
     protected $fillable = [
-    	'keyCareer',
-    	'careerName',
-    	'careerStatus',
+    	'nameRol',
+    	'slugRol',
+		'description',
+		'full-access',
+		'statusRol',
     ];
 }

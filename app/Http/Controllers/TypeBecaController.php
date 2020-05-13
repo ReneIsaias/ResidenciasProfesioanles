@@ -14,7 +14,8 @@ class TypeBecaController extends Controller
      */
     public function index()
     {
-        //
+         $typeBeca = TypeBeca::orderBy('id','Asc')->paginate(10);
+        return view('typeBeca.index',compact('typeBeca'));
     }
 
     /**
@@ -24,7 +25,8 @@ class TypeBecaController extends Controller
      */
     public function create()
     {
-        //
+         $typeBeca = TypeBeca::get();
+        return view('typeBeca.create',compact('typeBeca'));
     }
 
     /**
@@ -35,7 +37,14 @@ class TypeBecaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $create = TypeBeca::create([
+            'descriptionBeca' => request('descriptionBeca'),
+            'statusBeca' => request('statusBeca'), 
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('typeBeca.index')->with('status_success','TypeBeca saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +55,7 @@ class TypeBecaController extends Controller
      */
     public function show(TypeBeca $typeBeca)
     {
-        //
+         return view('typeBeca.show', compact('typeBeca'));
     }
 
     /**
@@ -57,7 +66,7 @@ class TypeBecaController extends Controller
      */
     public function edit(TypeBeca $typeBeca)
     {
-        //
+         return view('typeBeca.edit', compact('typeBeca'));
     }
 
     /**
@@ -69,7 +78,10 @@ class TypeBecaController extends Controller
      */
     public function update(Request $request, TypeBeca $typeBeca)
     {
-        //
+          $typeBeca -> update($request->all());
+
+        return redirect()->route('typeBeca.edit', $typeBeca->id)
+                ->with('info', 'TypeBeca updated successfully');
     }
 
     /**
@@ -80,6 +92,8 @@ class TypeBecaController extends Controller
      */
     public function destroy(TypeBeca $typeBeca)
     {
-        //
+          $typeBeca -> delete();
+
+        return back()->with('info','TypeBeca deleted successfully');
     }
 }

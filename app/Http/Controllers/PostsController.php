@@ -14,7 +14,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //
+         $posts = Posts::orderBy('id','Asc')->paginate(10);
+        return view('posts.index',compact('posts'));
     }
 
     /**
@@ -24,7 +25,8 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+       $posts = Posts::get();
+        return view('posts.create',compact('posts'));
     }
 
     /**
@@ -35,7 +37,15 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $create = Posts::create([
+            'keyCareer' => request('keyCareer'),
+            'careerName' => request('careerName'),
+            'careerStatus' => request('careerStatus'),     
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('posts.index')->with('status_success','Posts saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +56,7 @@ class PostsController extends Controller
      */
     public function show(Posts $posts)
     {
-        //
+        return view('posts.show', compact('posts'));
     }
 
     /**
@@ -57,7 +67,7 @@ class PostsController extends Controller
      */
     public function edit(Posts $posts)
     {
-        //
+         return view('posts.edit', compact('posts'));
     }
 
     /**
@@ -69,7 +79,10 @@ class PostsController extends Controller
      */
     public function update(Request $request, Posts $posts)
     {
-        //
+        $posts -> update($request->all());
+
+        return redirect()->route('posts.edit', $posts->id)
+                ->with('info', 'Posts updated successfully');
     }
 
     /**
@@ -80,6 +93,8 @@ class PostsController extends Controller
      */
     public function destroy(Posts $posts)
     {
-        //
+        $posts -> delete();
+
+        return back()->with('info','Posts deleted successfully');
     }
 }

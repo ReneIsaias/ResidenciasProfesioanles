@@ -14,7 +14,8 @@ class TurnsController extends Controller
      */
     public function index()
     {
-        //
+         $turns = Turns::orderBy('id','Asc')->paginate(10);
+        return view('turns.index',compact('turns'));
     }
 
     /**
@@ -24,7 +25,8 @@ class TurnsController extends Controller
      */
     public function create()
     {
-        //
+         $turns = Turns::get();
+        return view('turns.create',compact('turns'));
     }
 
     /**
@@ -35,7 +37,14 @@ class TurnsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $create = Turns::create([
+            'descriptionTurn' => request('descriptionTurn'),
+            'statusTurn' => request('statusTurn'), 
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('turns.index')->with('status_success','Turns saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +55,7 @@ class TurnsController extends Controller
      */
     public function show(Turns $turns)
     {
-        //
+         return view('turns.show', compact('turns'));
     }
 
     /**
@@ -57,7 +66,7 @@ class TurnsController extends Controller
      */
     public function edit(Turns $turns)
     {
-        //
+         return view('turns.edit', compact('turns'));
     }
 
     /**
@@ -69,7 +78,10 @@ class TurnsController extends Controller
      */
     public function update(Request $request, Turns $turns)
     {
-        //
+          $turns -> update($request->all());
+
+        return redirect()->route('turns.edit', $turns->id)
+                ->with('info', 'Turns updated successfully');
     }
 
     /**
@@ -80,6 +92,8 @@ class TurnsController extends Controller
      */
     public function destroy(Turns $turns)
     {
-        //
+          $turns -> delete();
+
+        return back()->with('info','Turns deleted successfully');
     }
 }

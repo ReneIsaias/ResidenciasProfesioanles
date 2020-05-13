@@ -14,7 +14,8 @@ class TypesafesController extends Controller
      */
     public function index()
     {
-        //
+         $typesafes = Typesafes::orderBy('id','Asc')->paginate(10);
+        return view('typesafes.index',compact('typesafes'));
     }
 
     /**
@@ -24,7 +25,8 @@ class TypesafesController extends Controller
      */
     public function create()
     {
-        //
+        $typesafes = Typesafes::get();
+        return view('typesafes.create',compact('typesafes'));
     }
 
     /**
@@ -35,7 +37,15 @@ class TypesafesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $create = Typesafes::create([
+            'safeName' => request('safeName'),
+            'descriptionSafe' => request('descriptionSafe'), 
+            'statusSafe' => request('statusSafe'), 
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('typesafes.index')->with('status_success','Typesafes saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +56,7 @@ class TypesafesController extends Controller
      */
     public function show(Typesafes $typesafes)
     {
-        //
+        return view('typesafes.show', compact('typesafes'));
     }
 
     /**
@@ -57,7 +67,7 @@ class TypesafesController extends Controller
      */
     public function edit(Typesafes $typesafes)
     {
-        //
+         return view('typesafes.edit', compact('typesafes'));
     }
 
     /**
@@ -69,7 +79,10 @@ class TypesafesController extends Controller
      */
     public function update(Request $request, Typesafes $typesafes)
     {
-        //
+          $typesafes -> update($request->all());
+
+        return redirect()->route('typesafes.edit', $typesafes->id)
+                ->with('info', 'Typesafes updated successfully');
     }
 
     /**
@@ -80,6 +93,8 @@ class TypesafesController extends Controller
      */
     public function destroy(Typesafes $typesafes)
     {
-        //
+          $typesafes -> delete();
+
+        return back()->with('info','Typesafes deleted successfully');
     }
 }

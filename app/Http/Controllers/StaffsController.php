@@ -14,7 +14,8 @@ class StaffsController extends Controller
      */
     public function index()
     {
-        //
+         $staffs = Staffs::orderBy('id','Asc')->paginate(10);
+        return view('staffs.index',compact('staffs'));
     }
 
     /**
@@ -24,7 +25,8 @@ class StaffsController extends Controller
      */
     public function create()
     {
-        //
+         $staffs = Staffs::get();
+        return view('staffs.create',compact('staffs'));
     }
 
     /**
@@ -35,7 +37,23 @@ class StaffsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $create = Staffs::create([
+            'keyStaff' => request('keyStaff'),
+            'nameStaff' => request('nameStaff'),
+            'firstLastname' => request('firstLastname'),
+            'secondLastname' => request('secondLastname'),
+            'emailStaff' => request('emailStaff'),
+            'passwordStaff' => request('passwordStaff'),
+            'phoneStaff' => request('phoneStaff'),
+            'statusStaff' => request('statusStaff'),
+            'id_posts' => request('id_posts'),
+            'id_degreestudies' => request('id_degreestudies'),
+            'id_careers' => request('id_careers'),
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('staffs.index')->with('status_success','Staffs saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
     }
 
     /**
@@ -46,7 +64,7 @@ class StaffsController extends Controller
      */
     public function show(Staffs $staffs)
     {
-        //
+        return view('staffs.show', compact('staffs'));
     }
 
     /**
@@ -57,7 +75,7 @@ class StaffsController extends Controller
      */
     public function edit(Staffs $staffs)
     {
-        //
+         return view('staffs.edit', compact('staffs'));
     }
 
     /**
@@ -69,7 +87,10 @@ class StaffsController extends Controller
      */
     public function update(Request $request, Staffs $staffs)
     {
-        //
+          $staffs -> update($request->all());
+
+        return redirect()->route('staffs.edit', $staffs->id)
+                ->with('info', 'Staffs updated successfully');
     }
 
     /**
@@ -80,6 +101,8 @@ class StaffsController extends Controller
      */
     public function destroy(Staffs $staffs)
     {
-        //
+         $staffs -> delete();
+
+        return back()->with('info','Staffs deleted successfully');
     }
 }

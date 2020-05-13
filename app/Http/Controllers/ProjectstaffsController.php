@@ -14,7 +14,8 @@ class ProjectstaffsController extends Controller
      */
     public function index()
     {
-        //
+          $projectstaffs = Projectstaffs::orderBy('id','Asc')->paginate(10);
+        return view('projectstaffs.index',compact('projectstaffs'));
     }
 
     /**
@@ -24,7 +25,8 @@ class ProjectstaffsController extends Controller
      */
     public function create()
     {
-        //
+         $projectstaffs = Projectstaffs::get();
+        return view('projectstaffs.create',compact('projectstaffs'));
     }
 
     /**
@@ -35,7 +37,18 @@ class ProjectstaffsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $create = Projectstaffs::create([
+            'calification' => request('calification'),
+            'descriptionCalification' => request('descriptionCalification'),
+            'id_projects' => request('id_projects'),
+            'id_staffs' => request('id_staffs'),
+            'id_situationprojects' => request('id_situationprojects'),        
+        ]);
+    
+       // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
+       return redirect()->route('projectstaffs.index')->with('status_success','Projectstaffs saved successfully');    
+        //return redirect('addresses/'.$request->session()->get('customer_code'));
+
     }
 
     /**
@@ -46,7 +59,7 @@ class ProjectstaffsController extends Controller
      */
     public function show(Projectstaffs $projectstaffs)
     {
-        //
+        return view('projectstaffs.show', compact('projectstaffs'));
     }
 
     /**
@@ -57,7 +70,7 @@ class ProjectstaffsController extends Controller
      */
     public function edit(Projectstaffs $projectstaffs)
     {
-        //
+        return view('projectstaffs.edit', compact('projectstaffs'));
     }
 
     /**
@@ -69,7 +82,10 @@ class ProjectstaffsController extends Controller
      */
     public function update(Request $request, Projectstaffs $projectstaffs)
     {
-        //
+       $projectstaffs -> update($request->all());
+
+        return redirect()->route('projectstaffs.edit', $projectstaffs->id)
+                ->with('info', 'Projectstaffs updated successfully');
     }
 
     /**
@@ -80,6 +96,8 @@ class ProjectstaffsController extends Controller
      */
     public function destroy(Projectstaffs $projectstaffs)
     {
-        //
+         $projectstaffs -> delete();
+
+        return back()->with('info','Projectstaffs deleted successfully');
     }
 }
