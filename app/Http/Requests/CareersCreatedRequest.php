@@ -24,7 +24,7 @@ class CareersCreatedRequest extends FormRequest
     public function rules()
     {
         return [
-            'keyCareer' => 'required|min:5|max:20|unique:careers,keyCareer',
+            'keyCareer' => 'required|min:3|max:20|unique:careers,keyCareer',
             'careerName' => 'required|min:10|max:100|unique:careers,careerName',
             'careerStatus' => '',    
         ];

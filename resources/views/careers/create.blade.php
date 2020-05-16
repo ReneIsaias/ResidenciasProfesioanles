@@ -5,16 +5,16 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><h2>Create Busines</h2></div>
+                <div class="card-header"><h2>Create Career</h2></div>
 
                 <div class="card-body">
                     @include('custom.message')
-                    <form action="{{ route('role.store') }}" method="POST">
+                    <form action="{{ route('careers.store') }}" method="POST">
                     @csrf
                     <div class="container">
                         <h3>Require data</h3>
                         <div class="form-group">
-                            <label for="rfc">Rfc</label>
+                            <label for="rfc">keyCareer</label>
                             <input type="text"
                                 class="form-control"
                                 id="name"

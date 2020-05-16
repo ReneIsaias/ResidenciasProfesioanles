@@ -26,7 +26,7 @@
     <div class="container">
       <img class="gato" href="index.html" src="asset/img/tesjiLogo.png">
     <a class="navbar-brand" href="#"></a>
-      <a class="navbar-brand" href="index.html">T E S J I</a>
+      <a class="navbar-brand" href="index.html">T E S J sI</a>
       <div  class="collapse navbar-collapse" id="navbarResponsive">        
         <ul  class="navbar-nav mr-auto mt-2 mt-lg-0">          
           <li class="nav-item">
