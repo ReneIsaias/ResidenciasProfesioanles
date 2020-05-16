@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Files\Models\Careers;
 use Illuminate\Http\Request;
+use App\Http\Requests\CareersCreatedRequest;
 
 class CareersController extends Controller
 {
@@ -27,6 +28,7 @@ class CareersController extends Controller
     {
         $careers = Careers::get();
         return view('careers.create',compact('careers'));
+        //return view('careers.create');
     }
 
     /**
@@ -37,12 +39,19 @@ class CareersController extends Controller
      */
     public function store(Request $request)
     {
+        /*
+        $request->validate([
+            'keyCareer' => 'required|min:3|max:10|unique:careers,keyCareer',
+            'careerName' => 'required|min:5|max:100|unique:careers,careerName',
+            'careerStatus' => 'requiered|max:2|numeric',   
+        ]);
+        $create = Careers::create([$request->all()]);
+        */
         $create = Careers::create([
             'keyCareer' => request('keyCareer'),
             'careerName' => request('careerName'),
             'careerStatus' => request('careerStatus'),     
         ]);
-    
        // $success = $create ? $request->session()->flash('success', '¡Registro exitoso!') : $request->session()->flash('success', 'Ooops! Algo salio mal :(');
        return redirect()->route('careers.index')->with('status_success','Careers saved successfully');    
         //return redirect('addresses/'.$request->session()->get('customer_code'));
@@ -55,9 +64,9 @@ class CareersController extends Controller
      * @param  \App\Files\Models\Careers  $careers
      * @return \Illuminate\Http\Response
      */
-    public function show(Careers $careers)
+    public function show(Careers $career)
     {
-        return view('careers.show', compact('careers'));
+        return view('careers.show', compact('career'));
     }
 
     /**
@@ -66,9 +75,9 @@ class CareersController extends Controller
      * @param  \App\Files\Models\Careers  $careers
      * @return \Illuminate\Http\Response
      */
-    public function edit(Careers $careers)
+    public function edit(Careers $career)
     {
-        return view('careers.edit', compact('careers'));
+        return view('careers.edit', compact('career'));
     }
 
     /**
@@ -78,12 +87,12 @@ class CareersController extends Controller
      * @param  \App\Files\Models\Careers  $careers
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Careers $careers)
+    public function update(Request $request, Careers $career)
     {
-        $careers -> update($request->all());
+        $career -> update($request->all());
 
-        return redirect()->route('careers.edit', $careers->id)
-                ->with('info', 'Careers updated successfully');
+        return redirect()->route('careers.index', $career->id)
+                ->with('status_success', 'Careers updated successfully');
     }
 
     /**
@@ -92,10 +101,10 @@ class CareersController extends Controller
      * @param  \App\Files\Models\Careers  $careers
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Careers $careers)
+    public function destroy(Careers $career)
     {
-        $careers -> delete();
+        $career -> delete();
 
-        return back()->with('info','Careers deleted successfully');
+        return back()->with('status_success','Careers deleted successfully');
     }
 }

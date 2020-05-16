@@ -28,9 +28,15 @@
                                 <td>{{ $career->keyCareer }}</td>
                                 <td>{{ $career->careerName }}</td>
                                 <td>{{ $career->careerStatus }}</td>
-                                <td> <a class="btn btn-info" href="{{ route('careers.show',$career->id) }}">show</a> </td>
-                                <td> <a class="btn btn-success" href="{{ route('careers.edit',$career->id) }}">edit</a> </td>
-                                <td> <a class="btn btn-danger" href="{{ route('careers.edit',$career->id) }}">Delete</a> </td>
+                                <td> <a class="btn btn-info" href="{{ route('careers.show', $career -> id) }}">show</a> </td>
+                                <td> <a class="btn btn-success" href="{{ route('careers.edit', $career -> id) }}">edit</a> </td>
+                                <td>
+                                    {!! Form::open(['route' => ['careers.destroy',$career -> id],
+                                        'method' => 'DELETE']) !!}
+                                            <button class="btn btn-danger">Delete</button>
+                                    {!! Form::close() !!}
+                                </td>
+                                <!--  <td> <a class="btn btn-danger" href="{{ route('careers.edit',$career->id) }}">Delete</a> </td> -->
                             </tr>
                             @endforeach
                     </tbody>

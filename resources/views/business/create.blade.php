@@ -97,6 +97,9 @@
                                 No
                             </label>
                         </div>
+                        <input class="btn btn-primary"
+                            type="submit"
+                            value="Guardar">
                     </div>
                     </form>
                 </div>
